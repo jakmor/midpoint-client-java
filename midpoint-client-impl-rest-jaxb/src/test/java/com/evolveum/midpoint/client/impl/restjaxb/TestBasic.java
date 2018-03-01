@@ -20,11 +20,7 @@ import static org.testng.Assert.fail;
 import static org.testng.AssertJUnit.assertNotNull;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 import javax.ws.rs.core.Response;
@@ -38,6 +34,7 @@ import com.evolveum.midpoint.client.api.ServiceUtil;
 import com.evolveum.midpoint.xml.ns._public.common.api_types_3.PolicyItemDefinitionType;
 import com.evolveum.midpoint.xml.ns._public.common.api_types_3.PolicyItemsDefinitionType;
 import com.evolveum.midpoint.xml.ns._public.common.common_3.*;
+import com.evolveum.prism.xml.ns._public.types_3.ModificationTypeType;
 import com.evolveum.prism.xml.ns._public.types_3.ProtectedStringType;
 import com.sun.org.apache.xerces.internal.dom.ElementNSImpl;
 import com.sun.org.apache.xerces.internal.dom.TextImpl;
@@ -435,8 +432,24 @@ public class TestBasic {
 			fail("Cannot delete user, user not found");
 		}
 	}
-	
 
+	@Test
+	public void test18Execute() throws Exception {
+		Service service = getService();
+		List<String> oids = new ArrayList<>();
+
+		Map<String, Object> modificationMap = new HashMap<>();
+		modificationMap.put("description", "testing executeScript modify");
+
+		oids.add("00000000-0000-0000-0000-000000000002");
+
+		service.rpc().executeScript() //TODO: Hmm...maybe this should be service.users().script() after all....
+				.filter(UserType.class)
+				.inOid(oids)
+				.action()
+				.modify(modificationMap, ModificationTypeType.REPLACE)
+				.post();
+	}
 
 
 	private Service getService() throws IOException {		

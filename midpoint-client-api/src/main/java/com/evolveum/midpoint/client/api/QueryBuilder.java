@@ -18,6 +18,7 @@ package com.evolveum.midpoint.client.api;
 import javax.xml.namespace.QName;
 
 import com.evolveum.midpoint.client.api.exception.AuthenticationException;
+import com.evolveum.midpoint.client.api.exception.CommonException;
 import com.evolveum.midpoint.client.api.exception.ObjectNotFoundException;
 import com.evolveum.midpoint.client.api.verb.Get;
 import com.evolveum.midpoint.xml.ns._public.common.common_3.ObjectType;
@@ -51,7 +52,8 @@ public interface QueryBuilder<O extends ObjectType> extends Get<SearchResult<O>>
 	 * To:   r.query().item(x).eq(y).get();
 	 * @throws AuthenticationException 
 	 */
-	default SearchResult<O> get() throws ObjectNotFoundException, AuthenticationException {
+	default SearchResult<O> get() throws CommonException
+	{
 		return build().get();
 	}
 	
