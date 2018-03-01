@@ -59,6 +59,7 @@ public class DomSerializer {
 	private static final String FILTER_SUBSTRING_ANCHOR_END = "anchorEnd";
 	private static final String FILTER_GREATER = "greater";
 	private static final String FILTER_LESS = "less";
+	private static final String FILTER_IN_OID = "inOid";
 	
 	private static final String FILTER_NOT = "not";
 	private static final String FILTER_AND = "and";
@@ -306,6 +307,19 @@ private Element createPropertyValueFilter(String filterType, ItemPathType itemPa
 		children.forEach(child -> or.appendChild(child));
 		return or;
 	}
-	
-	
+
+	public Element createInOidFilter(List<String> oids){
+		Element inOid = document.createElementNS(SchemaConstants.NS_QUERY, FILTER_IN_OID);
+		oids.forEach(oid -> inOid.appendChild(createInOidValue(oid, document)));
+		return inOid;
+	}
+
+	private Element createInOidValue(String oid, Document document){
+		Element value = document.createElementNS(SchemaConstants.NS_QUERY, FILTER_VALUE);
+		value.setTextContent(oid);
+		return value;
+	}
+
+
+
 }

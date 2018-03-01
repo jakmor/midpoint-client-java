@@ -87,22 +87,6 @@ public class RestJaxbScriptService extends AbstractWebResource implements Script
     }
 
     @Override
-    public ScriptExecuter modify(String path, Object value, ModificationTypeType modificationType)
-    {
-        actionExpressionType.setType(ACTION_EXPRESSION_TYPE_MODIFY);
-        ActionParameterValueType actionParameterValueType = new ActionParameterValueType();
-
-        actionParameterValueType.setName(ACTION_PARAMETER_TYPE_DELTA);
-        ObjectDeltaType deltaType = new ObjectDeltaType();
-
-        deltaType.getItemDelta().add(RestUtil.buildItemDelta(modificationType, path, value));
-
-        actionParameterValueType.setValue(deltaType);
-        actionExpressionType.getParameter().add(actionParameterValueType);
-        return this;
-    }
-
-    @Override
     public ScriptResponseService response(String oid){
         scriptTaskOid = oid;
         return this;

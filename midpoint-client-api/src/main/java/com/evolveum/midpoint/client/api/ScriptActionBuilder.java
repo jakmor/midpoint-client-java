@@ -12,5 +12,4 @@ import java.util.Map;
 public interface ScriptActionBuilder
 {
     ScriptExecuter modify(Map<String, Object> pathValueMap, ModificationTypeType modificationType);
-    ScriptExecuter modify(String path, Object value, ModificationTypeType modificationType);
 }
