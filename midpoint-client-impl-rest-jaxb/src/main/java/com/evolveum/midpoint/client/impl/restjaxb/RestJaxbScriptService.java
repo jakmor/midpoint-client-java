@@ -25,13 +25,12 @@ import java.util.Map;
  */
 public class RestJaxbScriptService extends AbstractWebResource implements ScriptService, ScriptFilterBuilder, ScriptActionBuilder, ScriptExecuter, ScriptResponseService
 {
-    private static final String EXECUTE_URL_PREFIX =  "/executeScript";
+    private static final String EXECUTE_URL_PREFIX =  "/rpc/executeScript";
     private static final String RESULTS_URL_PREFIX =  "/executeScriptResults/";
     private static final String ASYNC_OPTION = "?asynchronous=true";
     private static final String ACTION_EXPRESSION_TYPE_MODIFY = "modify";
     private static final String ACTION_PARAMETER_TYPE_DELTA = "delta";
 
-    private ExpressionSequenceType expression;
     private SearchExpressionType searchExpression;
     private ActionExpressionType actionExpressionType;
     private String scriptTaskOid;
@@ -39,7 +38,6 @@ public class RestJaxbScriptService extends AbstractWebResource implements Script
 
     RestJaxbScriptService(final RestJaxbService service){
         super(service);
-        expression = new ExpressionSequenceType();
     }
 
     @Override
@@ -120,9 +118,9 @@ public class RestJaxbScriptService extends AbstractWebResource implements Script
     }
 
     @Override
-    public TaskFuture<OperationResultType> apost() throws CommonException
+    public TaskFuture<ExecuteScriptResponseType> apost() throws CommonException
     {
-        String restPath;
+        String restPath = EXECUTE_URL_PREFIX;
 
         if(async)
         {
@@ -132,20 +130,21 @@ public class RestJaxbScriptService extends AbstractWebResource implements Script
         }
 
         searchExpression.setScriptingExpression(new JAXBElement<ScriptingExpressionType>(new QName("action"), ScriptingExpressionType.class,actionExpressionType));
-        expression.getScriptingExpression().add(new JAXBElement<SearchExpressionType>(new QName("search"), SearchExpressionType.class,searchExpression));
 
-        Response response = getService().getClient().replacePath(restPath).post(expression);
+        ExecuteScriptType executeScriptType = new ExecuteScriptType();
+        executeScriptType.setScriptingExpression(new JAXBElement<SearchExpressionType>(new QName("search"), SearchExpressionType.class,searchExpression));
+
+        Response response = getService().getClient().replacePath(restPath).post(executeScriptType);
 
         switch (response.getStatus()) {
             case 200:
-                return new RestJaxbCompletedFuture<>(new OperationResultType());
+                return new RestJaxbCompletedFuture<>(new ExecuteScriptResponseType());
             case 400:
                 throw new BadRequestException(response.getStatusInfo().getReasonPhrase());
             case 401:
                 throw new AuthenticationException(response.getStatusInfo().getReasonPhrase());
             case 403:
                 throw new AuthorizationException(response.getStatusInfo().getReasonPhrase());
-                //TODO: Do we want to return a reference? Might be useful.
             case 404:
                 throw new ObjectNotFoundException(response.getStatusInfo().getReasonPhrase());
             default:

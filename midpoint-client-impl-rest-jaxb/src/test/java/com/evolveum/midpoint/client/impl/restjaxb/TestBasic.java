@@ -443,14 +443,14 @@ public class TestBasic {
 
 		oids.add("00000000-0000-0000-0000-000000000002");
 
-		service.rpc().executeScript() //TODO: Hmm...maybe this should be service.users().script() after all....
+		service.rpc().executeScript()
 				.filter(UserType.class)
 				.inOid(oids)
 				.action()
 				.modify(modificationMap, ModificationTypeType.REPLACE)
+				.async()
 				.post();
 	}
-
 
 	private Service getService() throws IOException {		
 		return getService(ADMIN, ADMIN_PASS, AuthenticationType.BASIC);

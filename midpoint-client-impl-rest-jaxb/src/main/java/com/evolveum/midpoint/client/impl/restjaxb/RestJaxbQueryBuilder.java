@@ -81,8 +81,7 @@ public class RestJaxbQueryBuilder<O extends ObjectType> implements QueryBuilder<
 		this.type = type;
 		this.owner = owner;
 	}
-	
-	
+
 	public static <O extends ObjectType>  RestJaxbQueryBuilder<O> create(RestJaxbService serachService, Class<O> type, FilterBuilder<O> owner){
 		RestJaxbQueryBuilder<O> restJaxbBuilder = new RestJaxbQueryBuilder<>(serachService, type, owner);
 		return restJaxbBuilder;
@@ -92,7 +91,6 @@ public class RestJaxbQueryBuilder<O extends ObjectType> implements QueryBuilder<
 	public SearchService<O> build() {
 		return new RestJaxbSearchService<O>(queryForService, type, query);
 	}
-
 
 	@Override
 	public MatchingRuleEntryBuilder<O> eq(Object... values) {
