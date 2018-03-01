@@ -15,8 +15,7 @@
  */
 package com.evolveum.midpoint.client.api.verb;
 
-import com.evolveum.midpoint.client.api.exception.AuthenticationException;
-import com.evolveum.midpoint.client.api.exception.ObjectNotFoundException;
+import com.evolveum.midpoint.client.api.exception.CommonException;
 
 /**
  * @author semancik
@@ -24,6 +23,6 @@ import com.evolveum.midpoint.client.api.exception.ObjectNotFoundException;
  */
 public interface Get<T> {
 
-	T get() throws ObjectNotFoundException, AuthenticationException;
+	T get() throws CommonException;
 	
 }

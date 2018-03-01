@@ -16,6 +16,7 @@
 package com.evolveum.midpoint.client.impl.restjaxb;
 
 import com.evolveum.midpoint.client.api.RpcService;
+import com.evolveum.midpoint.client.api.ScriptService;
 import com.evolveum.midpoint.client.api.TaskFuture;
 import com.evolveum.midpoint.client.api.ValidateGenerateRpcService;
 import com.evolveum.midpoint.client.api.exception.CommonException;
@@ -53,9 +54,8 @@ public class RestJaxbRpcService<T> implements RpcService<T>{
 	}
 
 	@Override
-	public void executeScript() {
-		// TODO Auto-generated method stub
-		
+	public ScriptService executeScript() {
+		return new RestJaxbScriptService(getService());
 	}
 
 	@Override

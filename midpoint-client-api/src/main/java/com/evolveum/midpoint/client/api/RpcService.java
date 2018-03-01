@@ -29,5 +29,5 @@ public interface RpcService<T> extends Post<T>{
 	
 	//TODO: implement, change return type etc
 	void compare();
-	void executeScript();
+	ScriptService executeScript();
 }
